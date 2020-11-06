@@ -2,10 +2,10 @@
 class CostMatrix:
     def get_cost(self, di, dj, ni, nj, A):
         # print(di, dj, ni, nj, A)
-        ci1 = (A-di-dj)*((ni-di)/ni)
+        ci1 = max(0, (A-di-dj)) * ((ni-di)/ni)
         ci2 = (ni-di)/ni
-        ci3 = (nj-(A-di))*(1/nj)
-        ci4 = (di+dj-A)*((di/ni)/(di/ni+dj/nj))
+        ci3 = max(0, (nj-(A-di))) * (1/nj)
+        ci4 = max(0, (di+dj-A)) * ((di/ni)/(di/ni+dj/nj))
         return round(ci1 + ci2 + ci3 + ci4, 1)
 
     def __init__(self, arr1, arr2, A_val):
