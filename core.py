@@ -1,7 +1,6 @@
 
 class CostMatrix:
     def get_cost(self, di, dj, ni, nj, A):
-        # print(di, dj, ni, nj, A)
         ci1 = max(0, (A-di-dj)) * ((ni-di)/ni)
         ci2 = (ni-di)/ni
         ci3 = max(0, (nj-(A-di))) * (1/nj)
@@ -32,12 +31,30 @@ class CostMatrix:
                     self.candidate_psne.append((i, j))
 
         self.psne = []
+        for cand in self.candidate_psne:
+            a, b = cand[0], cand[1]
+            val1, val2 = self.cost_matrix[a][b][0], self.cost_matrix[a][b][1]
+            row = []
+            col = []
+            for i in range(len(self.player2)):
+                if(i != b):
+                    row.append(self.cost_matrix[a][i][1])
+            for i in range(len(self.player1)):
+                if(i != a):
+                    col.append(self.cost_matrix[i][b][0])
 
-    def print_cand_psne(self):
+            if val1 <= min(col) and val2 <= min(row):
+                self.psne.append((a, b))
+
+    def get_cand_psne(self):
         op = str(self.candidate_psne)
         return op
 
-    def print_cost_matrix(self):
+    def get_psne(self):
+        op = str(self.psne)
+        return op
+
+    def get_cost_matrix(self):
         op = ""
         for row in self.cost_matrix:
             for elem in row:
@@ -46,11 +63,4 @@ class CostMatrix:
         return op
 
     def __str__(self):
-        return "candidate psne => {} \n cost_matrix => {}".format(str(self.print_cand_psne()), str(self.print_cost_matrix()))
-
-
-p2 = [1, 2, 3, 4, 5, 6, 7]
-p1 = [1, 2, 3]
-
-a = CostMatrix(p1, p2, 8)
-print(a)
+        return "candidate psne =>\n {} \n\n cost_matrix =>\n {} \n psne's =>\n {}".format(str(self.get_cand_psne()), str(self.get_cost_matrix()), str(self.get_psne()))
